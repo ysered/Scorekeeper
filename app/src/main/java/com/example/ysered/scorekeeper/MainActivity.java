@@ -1,8 +1,12 @@
 package com.example.ysered.scorekeeper;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -49,6 +53,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 updateScoreForTeam2(++score2);
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem item = menu.findItem(R.id.itemThemeMode);
+        if (isNightModeOn()) {
+            item.setTitle(R.string.day_mode);
+        } else {
+            item.setTitle(R.string.night_mode);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.itemThemeMode) {
+            if (isNightModeOn()) {
+                item.setTitle(R.string.day_mode);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            } else {
+                item.setTitle(R.string.night_mode);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }
+            recreate();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isNightModeOn() {
+        return AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
     }
 
     private void updateScoreForTeam1(int score) {
