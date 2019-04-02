@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String STATE_SCORE_TEAM_1 = "state_score_team_1";
+    private static final String STATE_SCORE_TEAM_2 = "state_score_team_2";
+
     private int score1 = 0;
     private int score2 = 0;
     private TextView scoreText1;
@@ -30,8 +33,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.decreaseTeam1).setOnClickListener(this);
         findViewById(R.id.decreaseTeam2).setOnClickListener(this);
 
+        restoreSavedState(savedInstanceState);
+
         updateScoreForTeam1(score1);
         updateScoreForTeam2(score2);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_SCORE_TEAM_1, score1);
+        outState.putInt(STATE_SCORE_TEAM_2, score2);
+    }
+
+    private void restoreSavedState(Bundle bundle) {
+        if (bundle != null) {
+            score1 = bundle.getInt(STATE_SCORE_TEAM_1, 0);
+            score2 = bundle.getInt(STATE_SCORE_TEAM_2, 0);
+        }
     }
 
     @Override
